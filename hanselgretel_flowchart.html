@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hansel y Gretel — Mapa Narrativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Paleta de Colores */
+  --bg-red: #E42F16;
+  --bg-orange: #F05123;
+  --text-pink: #FFB5C6;
+  --text-teal: #00A97F;
+  --text-white: #FFFFFF;
+  
+  /* Variables mapeadas para estructura */
+  --ink: #FFFFFF;
+  --parchment: #E42F16;
+  --parchment-dark: rgba(0, 0, 0, 0.1);
+  
+  --forest: #00A97F;
+  --forest-pale: rgba(0, 169, 127, 0.15);
+  
+  --amber: #FFB5C6;
+  --amber-pale: rgba(255, 181, 198, 0.1);
+  
+  --rose: #FFFFFF;
+  --rose-pale: rgba(255, 255, 255, 0.1);
+  
+  --sage: #00A97F;
+  --sage-pale: rgba(0, 169, 127, 0.15);
+  
+  --purple: #F05123;
+  --purple-pale: rgba(240, 81, 35, 0.15);
+  
+  --gray: #FFB5C6;
+  --gray-pale: rgba(255, 181, 198, 0.05);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--parchment);
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+header {
+  text-align: left; padding: 60px 40px 40px; position: relative; max-width: 1400px; margin: 0 auto;
+}
+
+h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(32px, 6vw, 64px);
+  font-weight: 900; 
+  letter-spacing: -0.04em; 
+  color: var(--text-pink);
+  line-height: 1.05;
+}
+
+.subtitle {
+  font-size: clamp(24px, 4vw, 48px);
+  font-weight: 900; 
+  font-style: normal;
+  color: var(--text-teal); 
+  margin-top: 10px; 
+  letter-spacing: -0.03em;
+}
+
+.pov-switcher {
+  display: flex; justify-content: flex-start; gap: 12px;
+  padding: 0 40px 40px; position: relative; z-index: 2; max-width: 1400px; margin: 0 auto;
+}
+
+.pov-btn {
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 12px 24px; border: 2px solid var(--text-pink);
+  background: transparent; color: var(--text-pink); cursor: pointer; transition: all .2s;
+  border-radius: 0;
+}
+
+.pov-btn:hover { background: rgba(255, 181, 198, 0.1); }
+.pov-btn.active { background: var(--text-pink); color: var(--bg-red); }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+.section-title {
+  font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-pink); text-align: center; margin-bottom: 8px;
+}
+.section-sub {
+  font-size: 16px; font-weight: 600; color: var(--text-white); text-align: center; margin-bottom: 40px; opacity: 0.8;
+}
+
+.chart-wrap {
+  max-width: 1400px; margin: 0 auto; padding: 0 32px 80px; position: relative; z-index: 2;
+}
+.flow {
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+
+.node {
+  position: relative; border: 2px solid; padding: 16px 20px; text-align: center;
+  border-radius: 0; z-index: 2;
+  transition: transform 0.2s, background 0.2s;
+  background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(4px);
+}
+.node:hover { transform: translateY(-4px); background: rgba(0, 0, 0, 0.3); }
+
+.node-title {
+  font-family: 'Inter', sans-serif; font-size: 15px; letter-spacing: -0.01em;
+  font-weight: 800; display: block; margin-bottom: 6px; text-transform: uppercase;
+}
+.node-sub {
+  font-size: 14px; font-weight: 400; line-height: 1.4; display: block; opacity: .9;
+}
+
+.node-root   { border-color: var(--text-pink); color: var(--text-pink); width: 280px; }
+.node-lexia  { border-color: var(--text-teal); color: var(--text-white); width: 260px; }
+.node-dec    { border-color: var(--text-pink); color: var(--text-pink); width: 280px; background: var(--text-pink); color: var(--bg-red); }
+.node-dec .node-sub { color: var(--bg-red); opacity: 0.8; font-weight: 600; }
+.node-nodo   { border-color: var(--bg-orange); color: var(--text-white); width: 260px; }
+
+.node-final-good { border-color: var(--text-teal); background: var(--text-teal); color: #fff; width: 200px; }
+.node-final-bad  { border-color: var(--text-white); background: var(--text-white); color: var(--bg-red); width: 200px; }
+.node-final-bad .node-sub { color: var(--bg-red); opacity: 0.9; font-weight: 600; }
+.node-final-neu  { border-color: var(--bg-orange); background: var(--bg-orange); color: #fff; width: 200px; }
+
+.node-polif  { border-color: var(--bg-orange); color: var(--text-white); width: 260px; border-width: 3px; }
+
+.arrow {
+  width: 3px; background: var(--text-pink); position: relative; flex-shrink: 0; z-index: 1;
+}
+.arrow::after {
+  content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+  border-left: 6px solid transparent; border-right: 6px solid transparent;
+  border-top: 8px solid var(--text-pink);
+}
+.arrow-short { height: 25px; } 
+.arrow-med   { height: 35px; }
+
+.branch-row {
+  display: flex; align-items: flex-start; justify-content: center; gap: 40px; width: 100%;
+}
+.branch-col { display: flex; flex-direction: column; align-items: center; }
+
+/* Aumentado a 85px para dar más espacio a los textos de las ramificaciones y evitar cruces */
+.conn-spacer { height: 85px; width: 100%; flex-shrink: 0; }
+
+.final-label { font-size: 14px; font-weight: 800; text-align: center; margin-top: 8px; text-transform: uppercase; }
+.act-label {
+  font-family: 'Inter', sans-serif; font-size: 14px; letter-spacing: 0.1em;
+  color: var(--text-white); text-align: center; padding: 25px 0 10px; font-weight: 800; text-transform: uppercase;
+}
+
+.legend {
+  display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+  padding: 30px; border-top: 2px solid rgba(255,255,255,0.2); margin-top: 40px;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--text-white); }
+.legend-swatch { width: 16px; height: 16px; flex-shrink: 0; }
+.sw-purple { background: var(--bg-orange); }
+.sw-amber  { background: var(--text-pink); }
+.sw-sage   { background: var(--text-teal); }
+.sw-rose   { background: var(--text-white); }
+.sw-gray   { background: var(--text-pink); opacity: 0.5; }
+
+.tabs {
+  display: flex; justify-content: center; gap: 10px;
+  margin-bottom: 40px;
+}
+.tab-btn {
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 10px 24px; border: 2px solid transparent; border-bottom: 2px solid rgba(255,255,255,0.2);
+  background: transparent; color: var(--text-white); cursor: pointer; transition: all .2s; opacity: 0.7;
+}
+.tab-btn:hover { opacity: 1; border-bottom-color: var(--text-pink); }
+.tab-btn.active { opacity: 1; color: var(--text-pink); border-bottom-color: var(--text-pink); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+#gsvg {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 1; overflow: visible;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.node { animation: fadeIn .4s ease both; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>TP2 Desmontaje y<br>Reprogramación del Relato</h1>
+  <p class="subtitle">Hansel & Gretel</p>
+</header>
+
+<div class="pov-switcher">
+  <button class="pov-btn active" onclick="switchPov('hg',this)">POV — Hansel y Gretel</button>
+  <button class="pov-btn" onclick="switchPov('bruja',this)">POV — La Bruja</button>
+</div>
+
+<div id="pov-hg" class="panel active">
+  <div class="chart-wrap">
+    <div class="section-title">Punto de vista · Hansel y Gretel</div>
+    <p class="section-sub">Cuatro actos · Cinco decisiones · Siete finales posibles</p>
+    <div class="flow">
+      <div class="act-label">Acto I — El hogar y el abandono</div>
+      <div class="node node-root" id="hg-menu">
+        <span class="node-title">Menú Principal — Selección de POV</span>
+        <span class="node-sub">Pantalla interactiva que habilita la polifonía del relato.</span>
+      </div>
+      <div class="arrow arrow-med"></div>
+      <div class="node node-root" id="hg-lex1">
+        <span class="node-title">Lexía 1 — La Casa</span>
+        <span class="node-sub">Escasez extrema. La madrastra convence al padre de abandonar a los niños.</span>
+      </div>
+      <div class="arrow arrow-short"></div>
+      <div class="node node-dec" id="hg-dec0">
+        <span class="node-title">Decisión Inicial — Elección de enfoque</span>
+        <span class="node-sub">¿Desde qué perspectiva actuar?</span>
+      </div>
+      <div class="conn-spacer" data-conn='{"from":"hg-dec0","left":"hg-hansel","right":"hg-gretel","lbl":"A — POV Hansel","rbl":"B — POV Gretel","lc":"#FFB5C6","rc":"#FFB5C6"}'></div>
+      <div class="branch-row">
+        <div class="branch-col">
+          <div class="node node-lexia" id="hg-hansel" style="width:230px">
+            <span class="node-title">Hansel — Guijarros</span>
+            <span class="node-sub">Junta piedras a escondidas en el patio de noche.</span>
+          </div>
+        </div>
+        <div class="branch-col">
+          <div class="node node-lexia" id="hg-gretel" style="width:230px">
+            <span class="node-title">Gretel — Escucha</span>
+            <span class="node-sub">Escucha la discusión a escondidas desde la oscuridad de la pieza.</span>
+          </div>
+        </div>
+      </div>
+      <div class="conn-spacer" data-conn='{"merge":true,"from":"hg-hansel","from2":"hg-gretel","to":"hg-lex2"}'></div>
+      <div class="node node-lexia" id="hg-lex2">
+        <span class="node-title">Lexía 2 — El Bosque</span>
+        <span class="node-sub">Los padres llevan a cabo el plan. Primer abandono mientras los niños duermen.</span>
+      </div>
+      <div class="arrow arrow-short"></div>
+      <div class="node node-lexia" id="hg-lex3">
+        <span class="node-title">Lexía 3 — Regreso Exitoso</span>
+        <span class="node-sub">La Luna ilumina los guijarros. Hansel guía a Gretel de vuelta a casa.</span>
+      </div>
+      <div class="arrow arrow-short"></div>
+      <div class="node node-lexia" id="hg-lex4">
+        <span class="node-title">Lexía 4 — Segundo Abandono</span>
+        <span class="node-sub">La puerta cerrada. Hansel no puede juntar piedras: deja migas de pan.</span>
+      </div>
+      <div class="arrow arrow-short"></div>
+      <div class="node node-dec" id="hg-dec1">
+        <span class="node-title">Decisión I — El Rastro en el Bosque</span>
+        <span class="node-sub">¿Confiar en las migas o buscar camino desconocido?</span>
+      </div>
+      <div class="conn-spacer" data-conn='{"from":"hg-dec1","left":"hg-lex4c","right":"hg-lex5","lbl":"A — migas","rbl":"B — instinto","lc":"#FFFFFF","rc":"#FFB5C6"}'></div>
+      <div class="branch-row" style="align-items:flex-start">
+        <div class="branch-col">
+          <div class="node node-lexia" id="hg-lex4c" style="width:210px">
+            <span class="node-title">Lexía 4C — El rastro perdido</span>
+            <span class="node-sub">Los pájaros se comen las migas. Los niños quedan completamente desorientados.</span>
+          </div>
+          <div class="arrow arrow-short"></div>
+          <div class="node node-final-bad" id="hg-final3" style="width:210px">
+            <span class="node-title">Final 3</span>
+            <span class="node-sub">Perdidos para siempre en el bosque.</span>
+          </div>
+          <div class="final-label" style="color:var(--text-white)">Trágico temprano</div>
+        </div>
+        <div class="branch-col">
+          <div class="act-label" style="padding-top:0">Acto II — El bosque profundo</div>
+          <div class="node node-lexia" id="hg-lex5">
+            <span class="node-title">Lexía 5 — El Bosque Profundo</span>
+            <span class="node-sub">Deambulan hambrientos hasta encontrar una cabaña hecha de comida y dulces.</span>
+          </div>
+          <div class="arrow arrow-short"></div>
+          <div class="node node-dec" id="hg-dec2">
+            <span class="node-title">Decisión II — La Cabaña de Dulce</span>
+            <span class="node-sub">¿Ceder ante el hambre o desconfiar y escapar?</span>
+          </div>
+          <div class="conn-spacer" data-conn='{"from":"hg-dec2","left":"hg-lex6","right":"hg-final6","lbl":"A — entrar","rbl":"B — rodear","lc":"#FFB5C6","rc":"#00A97F"}'></div>
+          <div class="branch-row" style="align-items:flex-start">
+            <div class="branch-col">
+              <div class="act-label" style="padding-top:0">Acto III — El cautiverio</div>
+              <div class="node node-lexia" id="hg-lex6" style="width:250px">
+                <span class="node-title">Lexía 6 — Captura</span>
+                <span class="node-sub">La anciana revela su identidad de bruja. Esclaviza a los niños.</span>
+              </div>
+              <div class="arrow arrow-short"></div>
+              <div class="node node-lexia" id="hg-lex7" style="width:250px">
+                <span class="node-title">Lexía 7 — La Jaula</span>
+                <span class="node-sub">Hansel encerrado para ser engordado. Gretel realiza tareas forzadas.</span>
+              </div>
+              <div class="arrow arrow-short"></div>
+              <div class="node node-dec" id="hg-dec4" style="width:250px">
+                <span class="node-title">Decisión IV — La Jaula</span>
+                <span class="node-sub">¿Forzar los barrotes o fingir debilidad y esperar?</span>
+              </div>
+              <div class="conn-spacer" data-conn='{"from":"hg-dec4","left":"hg-ramaD","right":"hg-ramaE","lbl":"A — forzar","rbl":"B — esperar","lc":"#FFFFFF","rc":"#F05123"}'></div>
+              <div class="branch-row" style="align-items:flex-start">
+                <div class="branch-col">
+                  <div class="node node-lexia" id="hg-ramaD" style="width:190px">
+                    <span class="node-title">Rama D — Descubierto</span>
+                    <span class="node-sub">La bruja descubre el intento. Devora a uno.</span>
+                  </div>
+                  <div class="arrow arrow-short"></div>
+                  <div class="node node-final-bad" id="hg-final4" style="width:190px">
+                    <span class="node-title">Final 4</span>
+                    <span class="node-sub">Supervivencia 1 vs 1. Trauma absoluto.</span>
+                  </div>
+                  <div class="final-label" style="color:var(--text-white)">Supervivencia traumática</div>
+                </div>
+                <div class="branch-col">
+                  <div class="node node-polif" id="hg-ramaE" style="width:200px">
+                    <span class="node-title">Lexía E — Polifonía</span>
+                    <span class="node-sub">Hansel finge debilidad. Abre ventana de diálogo con la bruja.</span>
+                  </div>
+                  <div class="arrow arrow-short"></div>
+                  <div class="node node-dec" id="hg-dec5" style="width:200px">
+                    <span class="node-title">Decisión V — Dilema Moral</span>
+                    <span class="node-sub">¿Atacar o escuchar?</span>
+                  </div>
+                  <div class="conn-spacer" data-conn='{"from":"hg-dec5","left":"hg-lex8","right":"hg-final7","lbl":"A — atacar","rbl":"B — escuchar","lc":"#FFFFFF","rc":"#00A97F"}'></div>
+                  <div class="branch-row" style="align-items:flex-start">
+                    <div class="branch-col">
+                      <div class="act-label" style="padding-top:0">Acto IV — El horno</div>
+                      <div class="node node-lexia" id="hg-lex8" style="width:180px">
+                        <span class="node-title">Lexía 8 — El Horno</span>
+                        <span class="node-sub">Bruja ordena a Gretel asomarse para ver temperatura.</span>
+                      </div>
+                      <div class="arrow arrow-short"></div>
+                      <div class="node node-dec" id="hg-dec3" style="width:180px">
+                        <span class="node-title">Decisión III — Actúa</span>
+                        <span class="node-sub">¿Engañar o fallar?</span>
+                      </div>
+                      <div class="conn-spacer" data-conn='{"from":"hg-dec3","left":"hg-lex9","right":"hg-final5","lbl":"A — éxito","rbl":"B — falla","lc":"#00A97F","rc":"#FFFFFF"}'></div>
+                      <div class="branch-row" style="align-items:flex-start; gap: 20px;">
+                        <div class="branch-col">
+                          <div class="node node-lexia" id="hg-lex9" style="width:160px">
+                            <span class="node-title">Lexía 9 — Escape</span>
+                            <span class="node-sub">Gretel encierra a la bruja. Liberan a Hansel.</span>
+                          </div>
+                          <div class="arrow arrow-short"></div>
+                          <div class="conn-spacer" data-conn='{"from":"hg-lex9","left":"hg-final1","right":"hg-final2","lbl":"A1","rbl":"A2","lc":"#00A97F","rc":"#F05123"}'></div>
+                          <div class="branch-row" style="align-items:flex-start; gap: 15px;">
+                            <div class="branch-col">
+                              <div class="node node-final-good" id="hg-final1" style="width:145px">
+                                <span class="node-title">Final 1</span>
+                                <span class="node-sub">Regresan con riquezas. Madrastra muerta.</span>
+                              </div>
+                              <div class="final-label" style="color:var(--text-teal)">Victoria clásica</div>
+                            </div>
+                            <div class="branch-col">
+                              <div class="node node-final-neu" id="hg-final2" style="width:145px">
+                                <span class="node-title">Final 2</span>
+                                <span class="node-sub">El ciclo de miseria se repite. Vuelven al bosque.</span>
+                              </div>
+                              <div class="final-label" style="color:var(--text-pink)">Bucle cíclico</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="branch-col">
+                          <div class="node node-final-bad" id="hg-final5" style="width:160px">
+                            <span class="node-title">Final 5</span>
+                            <span class="node-sub">La bruja domina. Ambos son devorados.</span>
+                          </div>
+                          <div class="final-label" style="color:var(--text-white)">Trágico absoluto</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="branch-col">
+                      <div class="node node-final-good" id="hg-final7" style="width:165px">
+                        <span class="node-title">Final 7</span>
+                        <span class="node-sub">Escuchan que la cabaña es un santuario. Se quedan.</span>
+                      </div>
+                      <div class="final-label" style="color:var(--text-teal)">Alianza colectiva</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="branch-col">
+              <div class="node node-final-good" id="hg-final6" style="width:200px">
+                <span class="node-title">Final 6</span>
+                <span class="node-sub">Rodean la cabaña. Un leñador los rescata en el camino.</span>
+              </div>
+              <div class="final-label" style="color:var(--text-teal)">Rescate externo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="pov-bruja" class="panel">
+  <div class="chart-wrap">
+    <div class="section-title">Punto de vista · La Bruja</div>
+    <p class="section-sub">Tres ramas · Once finales posibles</p>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('atraer',this)">Rama 1 — Atraer</button>
+      <button class="tab-btn" onclick="switchTab('ahuyentar',this)">Rama 2 — Ahuyentar</button>
+      <button class="tab-btn" onclick="switchTab('espiar',this)">Rama 3 — Espiar</button>
+    </div>
+
+    <div id="tab-atraer" class="tab-panel active">
+      <div class="flow">
+        <div class="node node-nodo" id="bra-n0">
+          <span class="node-title">N0 — Siente intrusos</span>
+          <span class="node-sub">Hace años vive sola protegiendo la casa.</span>
+        </div>
+        <div class="arrow arrow-short"></div>
+        <div class="node node-nodo" id="bra-n2">
+          <span class="node-title">N2 — Atraer con dulces</span>
+          <span class="node-sub">Usa el aroma a azúcar. Los niños entran a la casa.</span>
+        </div>
+        <div class="arrow arrow-short"></div>
+        <div class="node node-dec" id="bra-dec2">
+          <span class="node-title">2A — Decisión de captura</span>
+          <span class="node-sub">¿Saltarles encima o separarlos?</span>
+        </div>
+        <div class="conn-spacer" data-conn='{"from":"bra-dec2","left":"bra-f3a","right":"bra-n3b","lbl":"A — saltar","rbl":"B — separar","lc":"#FFFFFF","rc":"#F05123"}'></div>
+        <div class="branch-row" style="align-items:flex-start">
+          <div class="branch-col">
+            <div class="node node-final-bad" id="bra-f3a" style="width:200px">
+              <span class="node-title">Final 3A</span>
+              <span class="node-sub">Los niños escapan de las garras de la bruja.</span>
+            </div>
+            <div class="final-label" style="color:var(--text-white)">Fuga exitosa</div>
+          </div>
+          <div class="branch-col">
+            <div class="node node-nodo" id="bra-n3b" style="width:240px">
+              <span class="node-title">3B — Hansel enjaulado</span>
+              <span class="node-sub">Encierra al niño. Gretel descubre e intenta salvarlo.</span>
+            </div>
+            <div class="arrow arrow-short"></div>
+            <div class="node node-dec" id="bra-nodo3" style="width:240px">
+              <span class="node-title">Nodo 3 — ¿Cerrar o atrapar?</span>
+              <span class="node-sub">¿Cerrar puertas o atrapar a Gretel?</span>
+            </div>
+            <div class="conn-spacer" data-conn='{"from":"bra-nodo3","left":"bra-n4","right":"bra-n5","lbl":"A — cerrar","rbl":"B — atrapar","lc":"#F05123","rc":"#FFFFFF"}'></div>
+            <div class="branch-row" style="align-items:flex-start">
+              <div class="branch-col">
+                <div class="node node-nodo" id="bra-n4" style="width:200px">
+                  <span class="node-title">N4 — Los recibe amable</span>
+                  <span class="node-sub">Escucha que fueron abandonados.</span>
+                </div>
+                <div class="arrow arrow-short"></div>
+                <div class="node node-dec" id="bra-dec4" style="width:200px">
+                  <span class="node-title">¿Ayudarlos o usar?</span>
+                  <span class="node-sub">Dos impulsos internos.</span>
+                </div>
+                <div class="conn-spacer" data-conn='{"from":"bra-dec4","left":"bra-n6","right":"bra-n7","lbl":"N6 — ayudar","rbl":"N7 — usar","lc":"#F05123","rc":"#FFFFFF"}'></div>
+                <div class="branch-row" style="align-items:flex-start">
+                  <div class="branch-col">
+                    <div class="node node-nodo" id="bra-n6" style="width:165px">
+                      <span class="node-title">N6 — Recuerda</span>
+                      <span class="node-sub">Rechazo familiar.</span>
+                    </div>
+                    <div class="arrow arrow-short"></div>
+                    <div class="node node-dec" id="bra-dec6" style="width:165px">
+                      <span class="node-title">¿Magia o guiar?</span>
+                    </div>
+                    <div class="conn-spacer" data-conn='{"from":"bra-dec6","left":"bra-fC","right":"bra-fD","lbl":"C","rbl":"D","lc":"#00A97F","rc":"#00A97F"}'></div>
+                    <div class="branch-row" style="align-items:flex-start; gap: 15px;">
+                      <div class="branch-col">
+                        <div class="node node-final-good" id="bra-fC" style="width:125px">
+                          <span class="node-title">Final C</span>
+                          <span class="node-sub">Enseña magia.</span>
+                        </div>
+                      </div>
+                      <div class="branch-col">
+                        <div class="node node-final-good" id="bra-fD" style="width:125px">
+                          <span class="node-title">Final D</span>
+                          <span class="node-sub">Los guía a casa.</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="branch-col">
+                    <div class="node node-nodo" id="bra-n7" style="width:165px">
+                      <span class="node-title">N7 — Descubren</span>
+                      <span class="node-sub">Gretel ve el plan.</span>
+                    </div>
+                    <div class="arrow arrow-short"></div>
+                    <div class="node node-dec" id="bra-dec7" style="width:165px">
+                      <span class="node-title">¿Pelear o negociar?</span>
+                    </div>
+                    <div class="conn-spacer" data-conn='{"from":"bra-dec7","left":"bra-fE","right":"bra-fF","lbl":"E","rbl":"F","lc":"#FFFFFF","rc":"#FFB5C6"}'></div>
+                    <div class="branch-row" style="align-items:flex-start; gap: 15px;">
+                      <div class="branch-col">
+                        <div class="node node-final-bad" id="bra-fE" style="width:125px">
+                          <span class="node-title">Final E</span>
+                          <span class="node-sub">Va al horno.</span>
+                        </div>
+                      </div>
+                      <div class="branch-col">
+                        <div class="node node-final-neu" id="bra-fF" style="width:125px">
+                          <span class="node-title">Final F</span>
+                          <span class="node-sub">Gretel se queda.</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="branch-col">
+                <div class="node node-nodo" id="bra-n5" style="width:180px">
+                  <span class="node-title">N5 — Hostil</span>
+                  <span class="node-sub">Hansel listo para el horno.</span>
+                </div>
+                <div class="arrow arrow-short"></div>
+                <div class="node node-dec" id="bra-dec5" style="width:180px">
+                  <span class="node-title">¿Cocinar o culpa?</span>
+                  <span class="node-sub">Impulsos en tensión.</span>
+                </div>
+                <div class="conn-spacer" data-conn='{"from":"bra-dec5","left":"bra-fA","right":"bra-fB","lbl":"A","rbl":"B","lc":"#FFFFFF","rc":"#00A97F"}'></div>
+                <div class="branch-row" style="align-items:flex-start; gap: 15px;">
+                  <div class="branch-col">
+                    <div class="node node-final-bad" id="bra-fA" style="width:125px">
+                      <span class="node-title">Final A</span>
+                      <span class="node-sub">Cocina al niño. Soledad.</span>
+                    </div>
+                  </div>
+                  <div class="branch-col">
+                    <div class="node node-final-good" id="bra-fB" style="width:125px">
+                      <span class="node-title">Final B</span>
+                      <span class="node-sub">Libera por culpa.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-ahuyentar" class="tab-panel">
+      <div class="flow">
+        <div class="node node-nodo" id="ahu-n0">
+          <span class="node-title">N0 — Siente intrusos</span>
+        </div>
+        <div class="arrow arrow-short"></div>
+        <div class="node node-nodo" id="ahu-n3">
+          <span class="node-title">N3 — Ahuyentar con magia</span>
+          <span class="node-sub">Cambia caminos del bosque para desorientarlos.</span>
+        </div>
+        <div class="arrow arrow-short"></div>
+        <div class="node node-dec" id="ahu-dec">
+          <span class="node-title">¿Perderlos o guiarlos?</span>
+        </div>
+        <div class="conn-spacer" data-conn='{"from":"ahu-dec","left":"ahu-fG","right":"ahu-fH","lbl":"G — perder","rbl":"H — guiar","lc":"#FFFFFF","rc":"#00A97F"}'></div>
+        <div class="branch-row" style="gap:60px">
+          <div class="branch-col">
+            <div class="node node-final-bad" id="ahu-fG" style="width:220px">
+              <span class="node-title">Final G</span>
+              <span class="node-sub">Bosque se vuelve infinito. Perdidos para siempre.</span>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="node node-final-good" id="ahu-fH" style="width:220px">
+              <span class="node-title">Final H</span>
+              <span class="node-sub">Guiados en secreto hacia el pueblo.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-espiar" class="tab-panel">
+      <div class="flow">
+        <div class="node node-nodo" id="esp-n0">
+          <span class="node-title">N0 — Siente intrusos</span>
+        </div>
+        <div class="arrow arrow-short"></div>
+        <div class="node node-nodo" id="esp-n1">
+          <span class="node-title">N1 — Vigilar desde lejos</span>
+        </div>
+        <div class="arrow arrow-short"></div>
+        <div class="node node-dec" id="esp-dec1">
+          <span class="node-title">¿Seguir o mostrarse?</span>
+        </div>
+        <div class="conn-spacer" data-conn='{"from":"esp-dec1","left":"esp-n8","right":"esp-fI","lbl":"seguir — N8","rbl":"revelarse","lc":"#F05123","rc":"#FFFFFF"}'></div>
+        <div class="branch-row" style="gap:60px; align-items:flex-start">
+          <div class="branch-col">
+            <div class="node node-nodo" id="esp-n8" style="width:240px">
+              <span class="node-title">N8 — Ve su hambre real</span>
+            </div>
+            <div class="arrow arrow-short"></div>
+            <div class="node node-dec" id="esp-dec2" style="width:240px">
+              <span class="node-title">¿Crear ilusión o revelarse?</span>
+            </div>
+            <div class="conn-spacer" data-conn='{"from":"esp-dec2","left":"esp-fJ","right":"esp-fK","lbl":"J — ilusión","rbl":"K — verdad","lc":"#FFB5C6","rc":"#00A97F"}'></div>
+            <div class="branch-row" style="gap:30px">
+              <div class="branch-col">
+                <div class="node node-final-neu" id="esp-fJ" style="width:180px">
+                  <span class="node-title">Final J</span>
+                  <span class="node-sub">Ilusión creada para tener compañía.</span>
+                </div>
+              </div>
+              <div class="branch-col">
+                <div class="node node-final-good" id="esp-fK" style="width:180px">
+                  <span class="node-title">Final K</span>
+                  <span class="node-sub">Revela su pasado como exiliada.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="node node-final-neu" id="esp-fI" style="width:220px">
+              <span class="node-title">Final I</span>
+              <span class="node-sub">Huyen aterrados. Vista siempre como un monstruo.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend" style="margin-top: 40px;">
+      <div class="legend-item"><span class="legend-swatch sw-purple"></span>Nodo narrativo</div>
+      <div class="legend-item"><span class="legend-swatch sw-amber"></span>Punto de decisión</div>
+      <div class="legend-item"><span class="legend-swatch sw-sage"></span>Final positivo</div>
+      <div class="legend-item"><span class="legend-swatch sw-rose"></span>Final oscuro</div>
+      <div class="legend-item"><span class="legend-swatch sw-gray"></span>Final ambiguo</div>
+    </div>
+  </div>
+</div>
+
+<svg id="gsvg">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5"
+      markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"/>
+    </marker>
+  </defs>
+</svg>
+
+<script>
+function switchPov(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.pov-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('pov-' + id).classList.add('active');
+  btn.classList.add('active');
+  requestAnimationFrame(drawAll);
+}
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  requestAnimationFrame(drawAll);
+}
+
+function cx(el) { const r = el.getBoundingClientRect(); return r.left + r.width / 2 + window.scrollX; }
+function bot(el) { const r = el.getBoundingClientRect(); return r.bottom + window.scrollY; }
+function topY(el) { const r = el.getBoundingClientRect(); return r.top + window.scrollY; }
+
+function ns(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
+
+function drawCurve(svg, x1, y1, x2, y2, color) {
+  const p = ns('path');
+  const offset = Math.abs(y2 - y1) / 1.8; 
+  const d = `M ${x1.toFixed(1)} ${y1.toFixed(1)} 
+             C ${x1.toFixed(1)} ${(y1 + offset).toFixed(1)}, 
+               ${x2.toFixed(1)} ${(y2 - offset).toFixed(1)}, 
+               ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+  p.setAttribute('d', d);
+  p.setAttribute('fill', 'none');
+  p.setAttribute('stroke', color);
+  p.setAttribute('stroke-width', '3'); 
+  p.setAttribute('color', color); 
+  p.setAttribute('marker-end', 'url(#arr)');
+  svg.appendChild(p);
+}
+
+function drawLabel(svg, x, y, text, color) {
+  const t = ns('text');
+  t.setAttribute('x', x.toFixed(1)); 
+  t.setAttribute('y', y.toFixed(1)); /* Centrado perfecto sin offset hacia abajo */
+  t.setAttribute('font-size', '13');
+  t.setAttribute('fill', color);
+  t.setAttribute('font-style', 'normal');
+  t.setAttribute('font-weight', '800');
+  t.setAttribute('font-family', "'Inter', sans-serif");
+  t.setAttribute('text-anchor', 'middle');
+  t.setAttribute('paint-order', 'stroke fill');
+  t.setAttribute('stroke', '#E42F16');
+  t.setAttribute('stroke-width', '6');
+  t.setAttribute('stroke-linejoin', 'round');
+  t.textContent = text;
+  svg.appendChild(t);
+}
+
+function drawAll() {
+  const svg = document.getElementById('gsvg');
+  svg.style.height = document.documentElement.scrollHeight + 'px';
+  svg.style.width = document.documentElement.scrollWidth + 'px';
+  
+  const defs = svg.querySelector('defs');
+  while (svg.lastChild !== defs) svg.removeChild(svg.lastChild);
+
+  document.querySelectorAll('.conn-spacer[data-conn]').forEach(spacer => {
+    const r = spacer.getBoundingClientRect();
+    if (r.width === 0 || !document.body.contains(spacer)) return;
+    let el = spacer;
+    while (el && el !== document.body) {
+      if (getComputedStyle(el).display === 'none') return;
+      el = el.parentElement;
+    }
+
+    const cfg = JSON.parse(spacer.getAttribute('data-conn'));
+
+    if (cfg.merge) {
+      const A = document.getElementById(cfg.from);
+      const B = document.getElementById(cfg.from2);
+      const T = document.getElementById(cfg.to);
+      if (!A || !B || !T) return;
+      const tx = cx(T), ty = topY(T);
+      drawCurve(svg, cx(A), bot(A), tx, ty, '#FFB5C6');
+      drawCurve(svg, cx(B), bot(B), tx, ty, '#FFB5C6');
+      return;
+    }
+
+    const fromEl = document.getElementById(cfg.from);
+    const leftEl = document.getElementById(cfg.left);
+    const rightEl= document.getElementById(cfg.right);
+    if (!fromEl || !leftEl || !rightEl) return;
+
+    const sx = cx(fromEl), sy = bot(fromEl);
+    const lx = cx(leftEl),  ly = topY(leftEl);
+    const rx = cx(rightEl), ry = topY(rightEl);
+
+    drawCurve(svg, sx, sy, lx, ly, cfg.lc || '#FFB5C6');
+    drawCurve(svg, sx, sy, rx, ry, cfg.rc || '#FFB5C6');
+
+    if (cfg.lbl) drawLabel(svg, (sx + lx) / 2, (sy + ly) / 2, cfg.lbl, cfg.lc || '#FFB5C6');
+    if (cfg.rbl) drawLabel(svg, (sx + rx) / 2, (sy + ry) / 2, cfg.rbl, cfg.rc || '#FFB5C6');
+  });
+}
+
+window.addEventListener('load',   () => requestAnimationFrame(drawAll));
+window.addEventListener('resize', () => requestAnimationFrame(drawAll));
+document.fonts.ready.then(() => requestAnimationFrame(drawAll));
+window.addEventListener('load', () => setTimeout(drawAll, 300));
+</script>
+</body>
+</html>
