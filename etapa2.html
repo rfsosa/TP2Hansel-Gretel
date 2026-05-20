@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etapa 2 — Propuesta Estética · Hansel y Gretel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  /* ===== ETAPA 2 — ESTILOS PROPIOS ===== */
+
+  .etapa2-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .content-box {
+    background: rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 181, 198, 0.3);
+    padding: 40px;
+    backdrop-filter: blur(4px);
+  }
+
+  .content-box h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(16px, 2.5vw, 24px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--text-pink);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(255, 181, 198, 0.2);
+  }
+
+  .content-box p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--text-white);
+    opacity: 0.9;
+    margin-bottom: 16px;
+  }
+
+  .content-box p:last-child { margin-bottom: 0; }
+
+  /* ===== TAGS ===== */
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 2px solid var(--text-teal);
+    color: var(--text-teal);
+    background: rgba(0, 169, 127, 0.1);
+  }
+
+  /* ===== MOODBOARD ===== */
+  .moodboard-sim {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .mood-box {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border: 2px solid rgba(255, 181, 198, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .mood-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85);
+    transition: filter 0.3s, transform 0.3s;
+  }
+
+  .mood-box:hover img {
+    filter: saturate(1.1);
+    transform: scale(1.04);
+  }
+
+  .mood-txt {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 12px;
+    background: linear-gradient(to top, rgba(228, 47, 22, 0.9), transparent);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-white);
+  }
+
+  /* ===== GRID DOS COLUMNAS ===== */
+  .etapa2-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  @media (max-width: 768px) {
+    .etapa2-grid {
+      grid-template-columns: 1fr;
+    }
+    .etapa2-content {
+      padding: 0 20px 60px;
+    }
+    .content-box {
+      padding: 28px 20px;
+    }
+    .moodboard-sim {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* ===== LISTA ===== */
+  .media-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .media-list li {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-white);
+    opacity: 0.9;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .media-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-pink);
+    font-weight: 800;
+  }
+
+  .media-list li strong {
+    color: var(--text-pink);
+    font-weight: 800;
+  }
+</style>
+</head>
+<body>
+
+<nav class="main-nav">
+  <a href="etapa1.html" class="nav-btn">Etapa 1</a>
+  <a href="etapa2.html" class="nav-btn active">Etapa 2</a>
+</nav>
+
+<header>
+  <h1>Propuesta Estética<br>&amp; Hipermedial</h1>
+  <p class="subtitle">Desarrollo y Estrategia</p>
+</header>
+
+<div class="etapa2-content">
+
+  <div class="content-box">
+    <h2>Exploración de Referencias Estéticas</h2>
+    <p>Nuestra propuesta se articula bajo la noción de un dispositivo de juguete virtual (Tamagotchi / Consola Portátil Retro) que opera como la interfaz de entrada a la experiencia. La inocencia estética del juguete entra en un choque violento con la narrativa de terror, abandono y canibalismo propia del relato original de Hansel y Gretel.</p>
+    <div class="tag-list">
+      <span class="tag">#Ilustración y Fantasía Oscura</span>
+      <span class="tag">#Cultura Digital Retro</span>
+      <span class="tag">#Glitch art</span>
+      <span class="tag">#Pixel art</span>
+      <span class="tag">#Surrealismo</span>
+    </div>
+    <div class="moodboard-sim">
+      <div class="mood-box">
+        <img src="img/AI doll avatar.jpg" alt="Fantasía Oscura">
+        <div class="mood-txt">Fantasía Oscura</div>
+      </div>
+      <div class="mood-box">
+        <img src="img/bubble.jpg" alt="Cultura Digital Retro">
+        <div class="mood-txt">Cultura Digital Retro</div>
+      </div>
+      <div class="mood-box">
+        <img src="img/pixel.jpg" alt="Pixel Art">
+        <div class="mood-txt">Pixel Art</div>
+      </div>
+      <div class="mood-box">
+        <img src="img/tama.jpg" alt="Toy Interface">
+        <div class="mood-txt">Toy Interface</div>
+      </div>
+      <div class="mood-box">
+        <img src="img/Two girls illustration.jpg" alt="Alto Contraste">
+        <div class="mood-txt">Alto Contraste</div>
+      </div>
+      <div class="mood-box">
+        <img src="img/junaida.jpg" alt="Surrealismo">
+        <div class="mood-txt">Surrealismo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="etapa2-grid">
+    <div class="content-box">
+      <h2>Selección de los Medios</h2>
+      <ul class="media-list">
+        <li><strong>Imagen/Gráfica:</strong> Ilustraciones que emulen el arte surrealista del moodboard para los escenarios del "bosque digital", combinadas con elementos vectoriales planos de interfaces.</li>
+        <li><strong>Audio:</strong> Paisajes sonoros híbridos (sintetizadores + ambientes de suspenso) y notas de voz con filtros de distorsión.</li>
+        <li><strong>Texto/Código:</strong> Tipografías pixeladas o de estilo videojuego retro que guiarán la navegación interactiva.</li>
+      </ul>
+    </div>
+
+    <div class="content-box">
+      <h2>Diseño de la Interfaz y Experiencia de Navegación</h2>
+      <p>La interfaz simulará un dispositivo de juguete virtual o una aplicación móvil retro-futurista (un híbrido entre un Tamagotchi gigante y un perfil de red social psicodélico).</p>
+      <p>Los botones de decisión tendrán texturas brillantes y de plástico. Navegar por el relato se sentirá como jugar un videojuego inocente que se va corrompiendo a medida que el usuario se adentra en las decisiones difíciles.</p>
+    </div>
+  </div>
+
+  <div class="content-box">
+    <h2>Estrategia de Inmersión, Actuación y Participación</h2>
+    <ul class="media-list">
+      <li><strong>Inmersión por Extrañamiento:</strong> La estética colorida pero perturbadora mantendrá al usuario en un estado de alerta constante. Utilización de colores vibrantes complementarios.</li>
+      <li><strong>Actuación/Participación:</strong> El usuario interactúa con objetos "lindos" (hacer clic en un espejo, tocar una pantalla de juguete) para tomar decisiones de vida o muerte para los hermanos.</li>
+      <li><strong>Navegación:</strong> La participación se vuelve interactiva a través del engaño visual: el usuario debe aprender a desconfiar de las interfaces perfectas.</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>
